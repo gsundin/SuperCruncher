@@ -4,69 +4,65 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // Audio players components.
-    public AudioSource EffectsSource;
-    public AudioSource MusicSource;
+    public static SoundManager Instance { get; private set; }
 
-    // All sounds, available to all classes
-    public static AudioClip chomp, death, level_start,
-                            level_clear2, beep, game_over,
-                            troggle_warning;
+    public AudioClip chomp, hurt, level_start, level_clear2, game_over;
+    static AudioSource audioSrc;
 
-    // Singleton instance.
-    public static SoundManager Instance = null;
-
-    // Used to initialize all sounds
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         chomp = Resources.Load<AudioClip>("chomp");
-        death = Resources.Load<AudioClip>("death");
+        hurt = Resources.Load<AudioClip>("hurt");
         level_start = Resources.Load<AudioClip>("level_start");
         level_clear2 = Resources.Load<AudioClip>("level_clear2");
-        beep = Resources.Load<AudioClip>("beep");
         game_over = Resources.Load<AudioClip>("game_over");
-        troggle_warning = Resources.Load<AudioClip>("troggle_warning");
+
+        audioSrc = GetComponent<AudioSource>();
     }
 
-    // Initialize the singleton instance.
-    private void Awake()
+    // Update is called once per frame
+    void Update()
     {
-        // If there is not already an instance of SoundManager, set it to this.
-        if (Instance == null)
+
+    }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            throw new System.Exception("An instance of this singleton already exists.");
+        }
+        else
         {
             Instance = this;
         }
-        //If an instance already exists, destroy whatever this object is to enforce the singleton.
-        else if (Instance != this)
+    }
+
+    public void Play(string clip)
+    {
+        switch (clip)
         {
-            Destroy(gameObject);
+            case "chomp":
+                audioSrc.PlayOneShot(chomp);
+                break;
+
+            case "hurt":
+                audioSrc.PlayOneShot(hurt);
+                break;
+
+            case "level_start":
+                audioSrc.PlayOneShot(level_start);
+                break;
+
+            case "level_clear2":
+                audioSrc.PlayOneShot(level_clear2);
+                break;
+
+            case "game_over":
+                audioSrc.PlayOneShot(game_over);
+                break;
         }
-
-        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
     }
-
-    // Play a single clip through the sound effects source.
-    public void Play(AudioClip clip)
-    {
-        EffectsSource.clip = clip;
-        EffectsSource.Play();
-    }
-
-    // Play a single clip through the music source.
-    public void PlayMusic(AudioClip clip)
-    {
-        MusicSource.clip = clip;
-        MusicSource.Play();
-    }
-
-    // Play a random clip from an array, and randomize the pitch slightly.
-    public void RandomSoundEffect(params AudioClip[] clips)
-    {
-        int randomIndex = Random.Range(0, clips.Length);
-
-        EffectsSource.clip = clips[randomIndex];
-        EffectsSource.Play();
-    }
-
 }

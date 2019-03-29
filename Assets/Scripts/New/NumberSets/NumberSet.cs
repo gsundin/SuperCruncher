@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NumberSet
 {
-    private string[] ruleSets = new string[]
+    private static string[] ruleSets = new string[]
     {
         "primes",
         "multiples",
@@ -15,7 +15,7 @@ public class NumberSet
     };
 
     // Generates number set based on rule set
-    private int[] Generate(int numberOfAnswers, int numberOfCorrectAnswers, int[] numberRange, string rule)
+    public static int[] Generate(int numberOfAnswers, int numberOfCorrectAnswers, int[] numberRange, string rule)
     {
         int[] set = new int[numberOfAnswers];
 
@@ -27,12 +27,16 @@ public class NumberSet
         switch (rule)
         {
             case "primes":
+                int tempmax = 0;
                 for (int i = 0; i < numberOfCorrectAnswers; i++)
                 {
                     do { possibleAnswer = Random.Range(numberRange[0], numberRange[1]); }
                     while (!Primes.Is(possibleAnswer));
                     set[i] = possibleAnswer;
+                    tempmax = i;
                 }
+                Debug.Log("Number of correct answers: " + numberOfCorrectAnswers +
+                          "\nIndex: " + tempmax);
                 for (int i = numberOfCorrectAnswers; i < numberOfAnswers; i++)
                 {
                     do { possibleAnswer = Random.Range(numberRange[0], numberRange[1]); }
@@ -73,11 +77,12 @@ public class NumberSet
                 }
                 break;
         }
+        //set = Shuffle(set);
         return set;
     }
 
     // Randomizes array order using Fisher-Yates algoritm
-    private int[] Shuffle(int[] array)
+    private static int[] Shuffle(int[] array)
     {
         for (int i = array.Length - 1; i > 0; i--)
         {

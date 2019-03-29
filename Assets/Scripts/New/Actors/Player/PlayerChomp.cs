@@ -9,28 +9,25 @@ public class PlayerChomp : Player
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Chomping initiated");
-            int currentCorrectChomps = GridContent.Instance.numberOfCorrectChomps;
+            int currentCorrectChomps = GameManager.Instance.currentNumberOfCorrectChomps;
             string currentTrigger = ColliderScript.currentTrigger;
 
             for (int i = 0; i < GridContent.GRID_SIZE; i++)
             {
-                int chompedNumber = int.Parse(GridContent.Instance.tileTexts[i].text);
-
-                string tileTextName = GridContent.Instance.tileTexts[i].name;
-                if (currentTrigger == tileTextName && GridContent.Instance.IsPrime(chompedNumber) && GridContent.Instance.tileTexts[i].enabled)
+                int chompedNumber = int.Parse(GridManager.Instance.texts[i].text);
+                
+                string spaceName = GridManager.Instance.texts[i].name;
+                if (currentTrigger == spaceName && Primes.Is(chompedNumber) && GridManager.Instance.texts[i].enabled)
                 {
-                    GridContent.Instance.tileTexts[i].enabled = false;
-                    GridContent.Instance.numberOfCorrectChomps++;
-                    PlayerAnimator.SetValue("chomping", true);
-                    //Debug.Log("You chomped a prime number, pal!");
+                    GridManager.Instance.texts[i].enabled = false;
+                    GameManager.Instance.currentNumberOfCorrectChomps++;
+                    GameManager.Instance.CorrectChomp();
                     break;
                 }
-                else if (currentTrigger == tileTextName && !GridContent.Instance.IsPrime(chompedNumber))
+                else if (currentTrigger == spaceName && !Primes.Is(chompedNumber))
                 {
-                    GridContent.Instance.tileTexts[i].color = Color.red;
-                    SoundManagerScript.PlaySound("death");
-                    PlayerAnimator.SetValue("chompedIncorrectTile", true);
+                    GridManager.Instance.texts[i].enabled = false;
+                    GameManager.Instance.IncorrectChomp();
                     break;
                 }
             }

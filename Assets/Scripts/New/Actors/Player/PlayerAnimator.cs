@@ -23,25 +23,4 @@ public class PlayerAnimator : Player
         anim.SetFloat("SpeedX", inputX);
         anim.SetFloat("SpeedY", inputY);
     }
-
-    // Overloaded static methods to set static animator parameters
-    public static void SetValue(string name, float value)
-    {
-        anim.SetFloat(name, value);
-    }
-
-    public static void SetValue(string name, bool value)
-    {
-        anim.SetBool(name, value);
-    }
-
-    public static void SetValue(string name, int value)
-    {
-        anim.SetInteger(name, value);
-    }
-
-    public static void SetValue(string name)
-    {
-        anim.SetTrigger(name);
-    }
 }
