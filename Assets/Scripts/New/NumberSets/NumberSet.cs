@@ -77,7 +77,7 @@ public class NumberSet
                 }
                 break;
         }
-        //set = Shuffle(set);
+        set = Shuffle(set);
         return set;
     }
 
