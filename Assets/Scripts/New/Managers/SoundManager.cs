@@ -6,17 +6,18 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    public AudioClip chomp, hurt, level_start, level_clear2, game_over;
+    public AudioClip chomp, hurt, level_start, level_clear2, game_over, beep;
     static AudioSource audioSrc;
 
     // Start is called before the first frame update
     void Start()
     {
-        chomp = Resources.Load<AudioClip>("chomp");
-        hurt = Resources.Load<AudioClip>("hurt");
-        level_start = Resources.Load<AudioClip>("level_start");
-        level_clear2 = Resources.Load<AudioClip>("level_clear2");
-        game_over = Resources.Load<AudioClip>("game_over");
+        chomp = Resources.Load<AudioClip>("Sounds/chomp");
+        hurt = Resources.Load<AudioClip>("Sounds/hurt");
+        level_start = Resources.Load<AudioClip>("Sounds/level_start");
+        level_clear2 = Resources.Load<AudioClip>("Sounds/level_clear2");
+        game_over = Resources.Load<AudioClip>("Sounds/game_over");
+        beep = Resources.Load<AudioClip>("Sounds/beep");
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -62,6 +63,10 @@ public class SoundManager : MonoBehaviour
 
             case "game_over":
                 audioSrc.PlayOneShot(game_over);
+                break;
+
+            case "beep":
+                audioSrc.PlayOneShot(beep);
                 break;
         }
     }

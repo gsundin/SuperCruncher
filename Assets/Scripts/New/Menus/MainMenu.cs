@@ -30,11 +30,13 @@ public class MainMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && cursor > 0)
         {
             cursor--;
+            SoundManager.Instance.Play("beep");
             moveHighlighter();
         }
         if (Input.GetKeyDown(KeyCode.S) && cursor < 4)
         {
             cursor++;
+            SoundManager.Instance.Play("beep");
             moveHighlighter();
         }
 
